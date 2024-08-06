@@ -52,4 +52,10 @@ public class FileController {
             return ResponseEntity.noContent().build();
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/root/{userId}")
+    public ResponseEntity<List<File>> getAllRootFilesByUserId(@PathVariable Long userId) {
+        List<File> files = fileRepository.findAllRootFilesByUserId(userId);
+        return ResponseEntity.ok(files);
+    }
 }
