@@ -32,6 +32,23 @@ public class SecurityConfig {
         return http.build();
     }
 
+
+    @Bean
+    @Profile("staging")
+    public SecurityFilterChain stagingSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(withDefaults()) // Enable CSRF protection
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/register").permitAll()
+                        .requestMatchers("/api/users/**", "/api/files/**", "/api/folders/**").authenticated()
+                        .anyRequest().permitAll()
+                )
+                .formLogin(withDefaults())
+                .logout(withDefaults());
+
+        return http.build();
+    }
+
     @Bean
     @Profile("prod")
     public SecurityFilterChain prodSecurityFilterChain(HttpSecurity http) throws Exception {
