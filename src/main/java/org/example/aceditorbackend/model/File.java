@@ -1,5 +1,6 @@
 package org.example.aceditorbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,7 @@ public class File {
 
     @ManyToOne
     @JoinColumn(name = "folder_id")
+    @JsonBackReference
     private Folder folder;
 
     @ManyToOne
