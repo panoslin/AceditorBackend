@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private Long id;
 
-    // Getters and Setters
     @Getter
     @Setter
     private String username;
@@ -26,8 +26,10 @@ public class User {
     @Setter
     private String password;
 
+    @Getter
     private LocalDateTime createdAt;
 
+    @Getter
     @Setter
     private LocalDateTime updatedAt;
 
