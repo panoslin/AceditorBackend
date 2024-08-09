@@ -30,8 +30,14 @@ public class DataInitializer {
             user2.setEmail("user@example.com");
             user2.setPassword(passwordEncoder.encode("password"));
 
+            User user3 = new User();
+            user3.setUsername("panos");
+            user3.setEmail("lghpanos@gmail.com");
+            user3.setPassword(passwordEncoder.encode("password"));
+
             userRepository.save(user1);
             userRepository.save(user2);
+            userRepository.save(user3);
 
             // Create folders for user1
             Folder rootFolder1 = new Folder();
