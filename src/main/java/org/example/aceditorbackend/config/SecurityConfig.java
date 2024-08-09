@@ -60,7 +60,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin(withDefaults())
+                .formLogin(form -> form
+                        .successHandler(new CustomAuthenticationSuccessHandler())
+                        .failureHandler(new CustomAuthenticationFailureHandler())
+                )
                 .logout(withDefaults());
 
         return http.build();
@@ -78,7 +81,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/**", "/api/files/**", "/api/folders/**").authenticated()
                         .anyRequest().permitAll()
                 )
-                .formLogin(withDefaults())
+                .formLogin(form -> form
+                        .successHandler(new CustomAuthenticationSuccessHandler())
+                        .failureHandler(new CustomAuthenticationFailureHandler())
+                )
                 .logout(withDefaults());
 
         return http.build();
@@ -95,7 +101,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/**", "/api/files/**", "/api/folders/**").authenticated()
                         .anyRequest().permitAll()
                 )
-                .formLogin(withDefaults())
+                .formLogin(form -> form
+                        .successHandler(new CustomAuthenticationSuccessHandler())
+                        .failureHandler(new CustomAuthenticationFailureHandler())
+                )
                 .logout(withDefaults());
 
         return http.build();
