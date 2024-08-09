@@ -1,9 +1,12 @@
 package org.example.aceditorbackend.controller;
 
+import org.example.aceditorbackend.config.CustomUserDetails;
 import org.example.aceditorbackend.model.File;
 import org.example.aceditorbackend.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -53,8 +56,11 @@ public class FileController {
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/root/{userId}")
-    public ResponseEntity<List<File>> getAllRootFilesByUserId(@PathVariable Long userId) {
+    @GetMapping("/root")
+    public ResponseEntity<List<File>> getAllRootFilesByUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        Long userId = userDetails.getUserId();
         List<File> files = fileRepository.findAllRootFilesByUserId(userId);
         return ResponseEntity.ok(files);
     }
