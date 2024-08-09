@@ -1,9 +1,12 @@
 package org.example.aceditorbackend.controller;
 
+import org.example.aceditorbackend.config.CustomUserDetails;
 import org.example.aceditorbackend.model.Folder;
 import org.example.aceditorbackend.repository.FolderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -50,5 +53,15 @@ public class FolderController {
             folderRepository.delete(folder);
             return ResponseEntity.noContent().build();
         }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/root")
+    public ResponseEntity<List<Folder>> getAllRootFoldersForAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        Long userId = userDetails.getUserId();
+
+        List<Folder> folders = folderRepository.findAllRootFoldersByUserId(userId);
+        return ResponseEntity.ok(folders);
     }
 }

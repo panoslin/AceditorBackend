@@ -1,5 +1,6 @@
 package org.example.aceditorbackend.service;
 
+import org.example.aceditorbackend.config.CustomUserDetails;
 import org.example.aceditorbackend.model.User;
 import org.example.aceditorbackend.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,11 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(STR."User not found with email: \{email}"));
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getEmail())
-                .password(user.getPassword())
-                .roles("USER")
-                .build();
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        return new CustomUserDetails(user);
     }
 }
