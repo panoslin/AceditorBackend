@@ -64,7 +64,9 @@ public class SecurityConfig {
                         .successHandler(new CustomAuthenticationSuccessHandler())
                         .failureHandler(new CustomAuthenticationFailureHandler())
                 )
-                .logout(withDefaults());
+                .logout(logout -> logout
+                        .logoutSuccessHandler(new CustomLogoutSuccessHandler())
+                );
 
         return http.build();
     }
@@ -85,7 +87,9 @@ public class SecurityConfig {
                         .successHandler(new CustomAuthenticationSuccessHandler())
                         .failureHandler(new CustomAuthenticationFailureHandler())
                 )
-                .logout(withDefaults());
+                .logout(logout -> logout
+                        .logoutSuccessHandler(new CustomLogoutSuccessHandler())
+                );
 
         return http.build();
     }
@@ -105,7 +109,9 @@ public class SecurityConfig {
                         .successHandler(new CustomAuthenticationSuccessHandler())
                         .failureHandler(new CustomAuthenticationFailureHandler())
                 )
-                .logout(withDefaults());
+                .logout(logout -> logout
+                        .logoutSuccessHandler(new CustomLogoutSuccessHandler())
+                );
 
         return http.build();
     }
