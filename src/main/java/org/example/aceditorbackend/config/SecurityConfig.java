@@ -60,6 +60,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                )
                 .formLogin(form -> form
                         .successHandler(new CustomAuthenticationSuccessHandler())
                         .failureHandler(new CustomAuthenticationFailureHandler())
@@ -83,6 +86,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/**", "/api/files/**", "/api/folders/**").authenticated()
                         .anyRequest().permitAll()
                 )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                )
                 .formLogin(form -> form
                         .successHandler(new CustomAuthenticationSuccessHandler())
                         .failureHandler(new CustomAuthenticationFailureHandler())
@@ -104,6 +110,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/register").permitAll()
                         .requestMatchers("/api/users/**", "/api/files/**", "/api/folders/**").authenticated()
                         .anyRequest().permitAll()
+                )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 )
                 .formLogin(form -> form
                         .successHandler(new CustomAuthenticationSuccessHandler())
