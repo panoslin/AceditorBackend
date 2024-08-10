@@ -3,7 +3,6 @@ package org.example.aceditorbackend.controller;
 import org.example.aceditorbackend.model.File;
 import org.example.aceditorbackend.repository.FileRepository;
 import org.example.aceditorbackend.security.CustomUserDetails;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,8 +15,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/files")
 public class FileController {
-    @Autowired
-    private FileRepository fileRepository;
+
+    private final FileRepository fileRepository;
+
+    public FileController(FileRepository fileRepository) {
+        this.fileRepository = fileRepository;
+    }
 
     @GetMapping
     public List<File> getAllFiles() {

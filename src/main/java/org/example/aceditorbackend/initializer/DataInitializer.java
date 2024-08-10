@@ -9,15 +9,22 @@ import org.example.aceditorbackend.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
+@Profile({"dev", "staging"})
 @Configuration
 public class DataInitializer {
 
     @Bean
-    CommandLineRunner initDatabase(UserRepository userRepository, FolderRepository folderRepository, FileRepository fileRepository, PasswordEncoder passwordEncoder) {
+    CommandLineRunner initDatabase(
+            UserRepository userRepository,
+            FolderRepository folderRepository,
+            FileRepository fileRepository,
+            PasswordEncoder passwordEncoder
+    ) {
         return args -> {
             // Create users
             User user1 = new User();
