@@ -1,4 +1,4 @@
-package org.example.aceditorbackend.config;
+package org.example.aceditorbackend.security;
 
 
 import jakarta.servlet.http.HttpServletRequest;

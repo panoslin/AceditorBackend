@@ -1,8 +1,8 @@
 package org.example.aceditorbackend.controller;
 
-import org.example.aceditorbackend.config.CustomUserDetails;
 import org.example.aceditorbackend.model.Folder;
 import org.example.aceditorbackend.repository.FolderRepository;
+import org.example.aceditorbackend.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

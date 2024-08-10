@@ -1,4 +1,4 @@
-package org.example.aceditorbackend.config;
+package org.example.aceditorbackend.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

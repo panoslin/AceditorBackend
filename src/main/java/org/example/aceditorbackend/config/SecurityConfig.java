@@ -1,5 +1,9 @@
 package org.example.aceditorbackend.config;
 
+import org.example.aceditorbackend.security.CustomAuthenticationEntryPoint;
+import org.example.aceditorbackend.security.CustomAuthenticationFailureHandler;
+import org.example.aceditorbackend.security.CustomAuthenticationSuccessHandler;
+import org.example.aceditorbackend.security.CustomLogoutSuccessHandler;
 import org.example.aceditorbackend.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,12 +60,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/register").permitAll()
-                        .requestMatchers("/api/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                        .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
                         .successHandler(new CustomAuthenticationSuccessHandler())

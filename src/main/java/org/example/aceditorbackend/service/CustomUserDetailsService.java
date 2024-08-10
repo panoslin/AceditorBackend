@@ -1,8 +1,8 @@
 package org.example.aceditorbackend.service;
 
-import org.example.aceditorbackend.config.CustomUserDetails;
 import org.example.aceditorbackend.model.User;
 import org.example.aceditorbackend.repository.UserRepository;
+import org.example.aceditorbackend.security.CustomUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

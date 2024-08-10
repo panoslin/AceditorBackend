@@ -1,4 +1,4 @@
-package org.example.aceditorbackend.config;
+package org.example.aceditorbackend.security;
 
 import org.example.aceditorbackend.model.User;
 import org.springframework.security.core.GrantedAuthority;
