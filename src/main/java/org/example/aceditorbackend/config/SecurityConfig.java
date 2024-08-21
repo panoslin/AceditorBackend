@@ -1,12 +1,10 @@
 package org.example.aceditorbackend.config;
 
-import org.example.aceditorbackend.model.User;
 import org.example.aceditorbackend.security.CustomAuthenticationEntryPoint;
 import org.example.aceditorbackend.security.CustomAuthenticationFailureHandler;
 import org.example.aceditorbackend.security.CustomAuthenticationSuccessHandler;
 import org.example.aceditorbackend.security.CustomLogoutSuccessHandler;
 import org.example.aceditorbackend.service.CustomUserDetailsService;
-import org.example.aceditorbackend.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -17,8 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -31,14 +27,11 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
-    private final UserService userService;
 
     public SecurityConfig(
-            CustomUserDetailsService userDetailsService,
-            UserService userService
+            CustomUserDetailsService userDetailsService
     ) {
         this.userDetailsService = userDetailsService;
-        this.userService = userService;
     }
 
 
@@ -52,9 +45,13 @@ public class SecurityConfig {
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:8080", "http://127.0.0.1:8080", "https://your-production-domain.com"));
-//        corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-//        corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        corsConfig.setAllowedOrigins(Arrays.asList(
+                "http://localhost:4200",
+                "http://127.0.0.1:4200",
+                "https://aceditor-5ugvdo7dma-uc.a.run.app/"
+        ));
+        corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         corsConfig.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
