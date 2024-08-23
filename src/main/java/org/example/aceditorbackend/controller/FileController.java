@@ -1,11 +1,12 @@
 package org.example.aceditorbackend.controller;
 
 import org.example.aceditorbackend.model.File;
+import org.example.aceditorbackend.model.User;
 import org.example.aceditorbackend.repository.FileRepository;
-import org.example.aceditorbackend.security.CustomUserDetails;
+import org.example.aceditorbackend.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -17,9 +18,11 @@ import java.util.Optional;
 public class FileController {
 
     private final FileRepository fileRepository;
+    private final UserRepository userRepository;
 
-    public FileController(FileRepository fileRepository) {
+    public FileController(FileRepository fileRepository, UserRepository userRepository) {
         this.fileRepository = fileRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -35,8 +38,16 @@ public class FileController {
     }
 
     @PostMapping
-    public File createFile(@RequestBody File file) {
-        return fileRepository.save(file);
+    public File createFile(@AuthenticationPrincipal Jwt jwt, @RequestBody File file) {
+        String email = jwt.getClaimAsString("email");
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            file.setUser(user.get());
+            return fileRepository.save(file);
+        } else {
+            // user not found
+            return null;
+        }
     }
 
     @PutMapping("/{id}")
@@ -60,11 +71,15 @@ public class FileController {
     }
 
     @GetMapping("/root")
-    public ResponseEntity<List<File>> getAllRootFilesByUserId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getUserId();
-        List<File> files = fileRepository.findAllRootFilesByUserId(userId);
-        return ResponseEntity.ok(files);
+    public ResponseEntity<List<File>> getAllRootFilesByUserId(@AuthenticationPrincipal Jwt jwt) {
+        String email = jwt.getClaimAsString("email");
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            Long userId = user.get().getId();
+            List<File> files = fileRepository.findAllRootFilesByUserId(userId);
+            return ResponseEntity.ok(files);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

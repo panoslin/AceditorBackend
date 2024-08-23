@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface FileRepository extends JpaRepository<File, Long> {
 
-    @Query("SELECT file FROM File file WHERE file.user.id = :userId AND file.folder.parent IS NULL")
+    @Query("SELECT file FROM File file WHERE file.user.id = :userId AND file.folder IS NULL")
     List<File> findAllRootFilesByUserId(@Param("userId") Long userId);
 }

@@ -1,11 +1,15 @@
 package org.example.aceditorbackend.controller;
 
 import org.example.aceditorbackend.model.Folder;
+import org.example.aceditorbackend.model.User;
 import org.example.aceditorbackend.repository.FolderRepository;
+import org.example.aceditorbackend.repository.UserRepository;
 import org.example.aceditorbackend.security.CustomUserDetails;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -15,10 +19,15 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/folders")
 public class FolderController {
+    private final UserRepository userRepository;
     private final FolderRepository folderRepository;
 
-    public FolderController(FolderRepository folderRepository) {
+    public FolderController(
+            FolderRepository folderRepository,
+            UserRepository userRepository
+    ) {
         this.folderRepository = folderRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -34,8 +43,16 @@ public class FolderController {
     }
 
     @PostMapping
-    public Folder createFolder(@RequestBody Folder folder) {
-        return folderRepository.save(folder);
+    public Folder createFolder(@AuthenticationPrincipal Jwt jwt, @RequestBody Folder folder) {
+        String email = jwt.getClaimAsString("email");
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            folder.setUser(user.get());
+            return folderRepository.save(folder);
+        } else {
+            // user not found
+            return null;
+        }
     }
 
     @PutMapping("/{id}")
@@ -58,12 +75,15 @@ public class FolderController {
     }
 
     @GetMapping("/root")
-    public ResponseEntity<List<Folder>> getAllRootFoldersForAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getUserId();
-
-        List<Folder> folders = folderRepository.findAllRootFoldersByUserId(userId);
-        return ResponseEntity.ok(folders);
+    public ResponseEntity<List<Folder>> getAllRootFoldersForAuthenticatedUser(@AuthenticationPrincipal Jwt jwt) {
+        String email = jwt.getClaimAsString("email");
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            Long userId = user.get().getId();
+            List<Folder> folders = folderRepository.findAllRootFoldersByUserId(userId);
+            return ResponseEntity.ok(folders);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -29,7 +29,7 @@ public class DataInitializer {
             // Create users
             User user1 = new User();
             user1.setUsername("admin");
-            user1.setEmail("admin@example.com");
+            user1.setEmail("lghpanos@gmail.com");
             user1.setPassword(passwordEncoder.encode("password"));
 
             User user2 = new User();
@@ -74,8 +74,16 @@ public class DataInitializer {
             file2.setUser(user1);
             file2.setFolder(subFolder1);
 
+
+            File file3 = new File();
+            file3.setName("file3.txt");
+            file2.setContent("This is file 3");
+            file3.setUser(user1);
+//            file3.setFolder(subFolder1);
+
             fileRepository.save(file1);
             fileRepository.save(file2);
+            fileRepository.save(file3);
         };
     }
 }
