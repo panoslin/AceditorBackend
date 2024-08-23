@@ -1,9 +1,6 @@
 package org.example.aceditorbackend.config;
 
 import org.example.aceditorbackend.security.CustomAuthenticationEntryPoint;
-import org.example.aceditorbackend.security.CustomAuthenticationFailureHandler;
-import org.example.aceditorbackend.security.CustomAuthenticationSuccessHandler;
-import org.example.aceditorbackend.security.CustomLogoutSuccessHandler;
 import org.example.aceditorbackend.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -68,13 +65,17 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll()
                 )
-                .formLogin(form -> form
-                        .successHandler(new CustomAuthenticationSuccessHandler())
-                        .failureHandler(new CustomAuthenticationFailureHandler())
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(withDefaults())
                 )
-                .logout(logout -> logout
-                        .logoutSuccessHandler(new CustomLogoutSuccessHandler())
-                );
+//                .formLogin(form -> form
+//                        .successHandler(new CustomAuthenticationSuccessHandler())
+//                        .failureHandler(new CustomAuthenticationFailureHandler())
+//                )
+//                .logout(logout -> logout
+//                        .logoutSuccessHandler(new CustomLogoutSuccessHandler())
+//                )
+        ;
 
         return http.build();
     }
@@ -94,13 +95,17 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 )
-                .formLogin(form -> form
-                        .successHandler(new CustomAuthenticationSuccessHandler())
-                        .failureHandler(new CustomAuthenticationFailureHandler())
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(withDefaults())
                 )
-                .logout(logout -> logout
-                        .logoutSuccessHandler(new CustomLogoutSuccessHandler())
-                );
+//                .formLogin(form -> form
+//                        .successHandler(new CustomAuthenticationSuccessHandler())
+//                        .failureHandler(new CustomAuthenticationFailureHandler())
+//                )
+//                .logout(logout -> logout
+//                        .logoutSuccessHandler(new CustomLogoutSuccessHandler())
+//                )
+        ;
 
         return http.build();
     }
@@ -119,13 +124,17 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 )
-                .formLogin(form -> form
-                        .successHandler(new CustomAuthenticationSuccessHandler())
-                        .failureHandler(new CustomAuthenticationFailureHandler())
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(withDefaults())
                 )
-                .logout(logout -> logout
-                        .logoutSuccessHandler(new CustomLogoutSuccessHandler())
-                );
+//                .formLogin(form -> form
+//                        .successHandler(new CustomAuthenticationSuccessHandler())
+//                        .failureHandler(new CustomAuthenticationFailureHandler())
+//                )
+//                .logout(logout -> logout
+//                        .logoutSuccessHandler(new CustomLogoutSuccessHandler())
+//                )
+        ;
 
         return http.build();
     }
