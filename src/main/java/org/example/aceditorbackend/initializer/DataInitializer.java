@@ -77,7 +77,7 @@ public class DataInitializer {
 
             File file3 = new File();
             file3.setName("file3.txt");
-            file2.setContent("This is file 3");
+            file3.setContent("This is file 3");
             file3.setUser(user1);
 //            file3.setFolder(subFolder1);
 
