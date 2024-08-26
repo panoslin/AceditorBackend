@@ -1,8 +1,10 @@
 package org.example.aceditorbackend.controller;
 
 import org.example.aceditorbackend.model.File;
+import org.example.aceditorbackend.model.Folder;
 import org.example.aceditorbackend.model.User;
 import org.example.aceditorbackend.repository.FileRepository;
+import org.example.aceditorbackend.repository.FolderRepository;
 import org.example.aceditorbackend.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,10 +21,12 @@ public class FileController {
 
     private final FileRepository fileRepository;
     private final UserRepository userRepository;
+    private final FolderRepository folderRepository;
 
-    public FileController(FileRepository fileRepository, UserRepository userRepository) {
+    public FileController(FileRepository fileRepository, UserRepository userRepository, FolderRepository folderRepository) {
         this.fileRepository = fileRepository;
         this.userRepository = userRepository;
+        this.folderRepository = folderRepository;
     }
 
     @GetMapping
@@ -43,7 +47,14 @@ public class FileController {
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isPresent()) {
             file.setUser(user.get());
-            return fileRepository.save(file);
+            // add to folder's files if folder_id is provided
+            File newFile = fileRepository.save(file);
+            if (file.getFolder() != null && folderRepository.findById(file.getFolder().getId()).isPresent()) {
+                Folder folder = folderRepository.findById(file.getFolder().getId()).get();
+                folder.getFiles().add(newFile);
+                folderRepository.save(folder);
+            }
+            return newFile;
         } else {
             // user not found
             return null;
@@ -51,7 +62,10 @@ public class FileController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<File> updateFile(@PathVariable Long id, @RequestBody File fileDetails) {
+    public ResponseEntity<File> updateFile(@AuthenticationPrincipal Jwt jwt, @PathVariable Long id, @RequestBody File fileDetails) {
+        String email = jwt.getClaimAsString("email");
+        Optional<User> user = userRepository.findByEmail(email);
+        user.ifPresent(fileDetails::setUser);
         return fileRepository.findById(id).map(file -> {
             file.setName(fileDetails.getName());
             file.setContent(fileDetails.getContent());
