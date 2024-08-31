@@ -1,0 +1,36 @@
+# Maven directories
+target/
+.mvn/
+pom.xml.versionsBackup
+pom.xml.releaseBackup
+
+# Eclipse and IntelliJ IDEA project files
+*.iml
+*.ipr
+*.iws
+.idea/
+*.project
+.classpath
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*~
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Git and Version Control
+.git/
+.gitignore
+.svn/
+
+# Docker-related files
+Dockerfile
+docker-compose.yml
+.dockerignore
