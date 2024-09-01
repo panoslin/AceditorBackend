@@ -45,7 +45,8 @@ public class SecurityConfig {
         corsConfig.setAllowedOrigins(Arrays.asList(
                 "http://localhost:4200",
                 "http://127.0.0.1:4200",
-                "https://aceditor-5ugvdo7dma-uc.a.run.app/"
+                "https://aceditor-536318037598.us-central1.run.app",
+                "http://localhost"
         ));
         corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
