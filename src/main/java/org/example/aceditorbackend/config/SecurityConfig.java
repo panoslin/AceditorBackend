@@ -46,6 +46,7 @@ public class SecurityConfig {
                 "http://localhost:4200",
                 "http://127.0.0.1:4200",
                 "https://aceditor-536318037598.us-central1.run.app",
+                "https://aceditorbackend-536318037598.us-central1.run.app",
                 "http://localhost"
         ));
         corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
